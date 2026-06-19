@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/PKSonlem/secunda-api/internal/domain"
-	"github.com/PKSonlem/secunda-api/internal/middleware"
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
+	"github.com/PKSonlem/testtask-secunda-api/internal/middleware"
 	"github.com/labstack/echo/v4"
 )
 

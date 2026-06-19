@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/PKSonlem/secunda-api/internal/domain"
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
 	"github.com/labstack/echo/v4"
 )
 
