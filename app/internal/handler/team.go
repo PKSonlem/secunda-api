@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"errors"
 	"net/http"
 	"strconv"
@@ -11,17 +10,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type teamService interface {
-	Create(ctx context.Context, userID int64, name string) (*domain.Team, error)
-	List(ctx context.Context, userID int64) ([]*domain.Team, error)
-	Invite(ctx context.Context, callerID, teamID int64, inviteeEmail string) error
-}
-
 type TeamHandler struct {
-	svc teamService
+	svc domain.TeamService
 }
 
-func NewTeamHandler(svc teamService) *TeamHandler {
+func NewTeamHandler(svc domain.TeamService) *TeamHandler {
 	return &TeamHandler{svc: svc}
 }
 

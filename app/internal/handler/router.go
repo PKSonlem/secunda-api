@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
 	mw "github.com/PKSonlem/testtask-secunda-api/internal/middleware"
-	"github.com/PKSonlem/testtask-secunda-api/internal/service"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -10,9 +10,9 @@ import (
 )
 
 func NewRouter(
-	authSvc *service.AuthService,
-	teamSvc *service.TeamService,
-	taskSvc *service.TaskService,
+	authSvc domain.AuthService,
+	teamSvc domain.TeamService,
+	taskSvc domain.TaskService,
 	rdb *redis.Client,
 ) *echo.Echo {
 	e := echo.New()

@@ -4,16 +4,13 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
 	"github.com/labstack/echo/v4"
 )
 
 const ctxUserID = "userID"
 
-type tokenValidator interface {
-	ValidateToken(token string) (int64, error)
-}
-
-func JWT(svc tokenValidator) echo.MiddlewareFunc {
+func JWT(svc domain.AuthService) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			header := c.Request().Header.Get("Authorization")

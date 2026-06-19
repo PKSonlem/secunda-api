@@ -1,21 +1,19 @@
 package handler
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
 	"github.com/labstack/echo/v4"
 )
 
-type authService interface {
-	Register(ctx context.Context, email, password, name string) (*domain.User, error)
-	Login(ctx context.Context, email, password string) (string, error)
+type AuthHandler struct {
+	svc domain.AuthService
 }
 
-type AuthHandler struct{ svc authService }
-
-func NewAuthHandler(svc authService) *AuthHandler { return &AuthHandler{svc: svc} }
+func NewAuthHandler(svc domain.AuthService) *AuthHandler {
+	return &AuthHandler{svc: svc}
+}
 
 func (h *AuthHandler) Register(c echo.Context) error {
 	var req struct {

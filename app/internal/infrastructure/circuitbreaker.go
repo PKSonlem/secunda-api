@@ -18,6 +18,8 @@ type EmailClient struct {
 	http    *http.Client
 }
 
+// NewEmailCircuitBreaker размыкает цепь после 3 последовательных ошибок и держит её разомкнутой
+// 30 секунд. MaxRequests=3 — число пробных запросов в полуоткрытом состоянии.
 func NewEmailCircuitBreaker(cfg config.EmailConfig) *EmailClient {
 	cb := gobreaker.NewCircuitBreaker(gobreaker.Settings{
 		Name:        "email-service",
@@ -36,6 +38,8 @@ func NewEmailCircuitBreaker(cfg config.EmailConfig) *EmailClient {
 	}
 }
 
+// SendInvite считает ошибкой только ответы 5xx — 4xx не трипают circuit breaker,
+// так как это проблема запроса, а не доступности сервиса.
 func (e *EmailClient) SendInvite(ctx context.Context, email, teamName string) error {
 	_, err := e.breaker.Execute(func() (interface{}, error) {
 		body, _ := json.Marshal(map[string]string{"email": email, "team": teamName})

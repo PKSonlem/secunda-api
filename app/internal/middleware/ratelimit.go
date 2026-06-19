@@ -13,7 +13,8 @@ import (
 
 const requestsPerMinute = 100
 
-// RateLimit — 100 req/min per user via Redis INCR.
+// RateLimit ограничивает 100 запросов в минуту на пользователя (по userID из JWT, не по IP).
+// При недоступности Redis — fail open: запрос пропускается, чтобы не класть сервис из-за кэша.
 func RateLimit(rdb *redis.Client) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {

@@ -17,6 +17,8 @@ func NewTaskService(tasks domain.TaskRepository, teams domain.TeamRepository, ca
 	return &TaskService{tasks: tasks, teams: teams, cache: cache}
 }
 
+// Create проверяет членство в команде до записи — ошибка репозитория и отсутствие в команде
+// возвращают одинаковый ErrForbidden, чтобы не раскрывать существование команды.
 func (s *TaskService) Create(ctx context.Context, userID int64, task *domain.Task) (*domain.Task, error) {
 	ok, err := s.teams.IsMember(ctx, task.TeamID, userID)
 	if err != nil || !ok {
@@ -39,6 +41,8 @@ func (s *TaskService) Create(ctx context.Context, userID int64, task *domain.Tas
 	return task, nil
 }
 
+// Update берёт TeamID из существующей задачи, игнорируя поле из запроса —
+// клиент не может переместить задачу в другую команду через этот метод.
 func (s *TaskService) Update(ctx context.Context, userID, taskID int64, update *domain.Task) (*domain.Task, error) {
 	existing, err := s.tasks.GetByID(ctx, taskID)
 	if err != nil {
@@ -61,6 +65,8 @@ func (s *TaskService) Update(ctx context.Context, userID, taskID int64, update *
 	return update, nil
 }
 
+// List кэширует результат только при фильтре по TeamID — при промахе или ошибке кэша
+// запрос прозрачно уходит в БД без возврата ошибки клиенту.
 func (s *TaskService) List(ctx context.Context, filter domain.TaskFilter) ([]*domain.Task, int, error) {
 	if filter.TeamID != nil {
 		key := teamCacheKey(*filter.TeamID)

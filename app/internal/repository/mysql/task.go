@@ -27,6 +27,7 @@ func (r *TaskRepository) Create(ctx context.Context, t *domain.Task) (int64, err
 	if err != nil {
 		return 0, err
 	}
+
 	return res.LastInsertId()
 }
 
@@ -41,10 +42,12 @@ func (r *TaskRepository) GetByID(ctx context.Context, id int64) (*domain.Task, e
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, domain.ErrNotFound
 	}
+
 	return t, err
 }
 
-// Update сохраняет задачу и историю изменений в одной транзакции.
+// Update читает старое состояние задачи внутри той же транзакции, чтобы получить
+// консистентный снимок для истории и избежать гонки с параллельными обновлениями.
 func (r *TaskRepository) Update(ctx context.Context, task *domain.Task, changedBy int64) error {
 	return r.txMgr.WithTx(ctx, func(tx *sql.Tx) error {
 		old := &domain.Task{}
@@ -125,6 +128,7 @@ func (r *TaskRepository) List(ctx context.Context, f domain.TaskFilter) ([]*doma
 		}
 		tasks = append(tasks, t)
 	}
+
 	return tasks, total, rows.Err()
 }
 
@@ -148,15 +152,19 @@ func (r *TaskRepository) GetHistory(ctx context.Context, taskID int64) ([]*domai
 		}
 		history = append(history, h)
 	}
+
 	return history, rows.Err()
 }
 
+// writeHistory пишет только изменившиеся поля, а не полный снимок —
+// чтобы история не засорялась записями без реального изменения.
 func (r *TaskRepository) writeHistory(ctx context.Context, tx *sql.Tx, old, new *domain.Task, changedBy int64) error {
 	fields := []struct{ name, old, new string }{
 		{"title", old.Title, new.Title},
 		{"description", old.Description, new.Description},
 		{"status", string(old.Status), string(new.Status)},
 	}
+
 	for _, f := range fields {
 		if f.old == f.new {
 			continue
@@ -169,5 +177,6 @@ func (r *TaskRepository) writeHistory(ctx context.Context, tx *sql.Tx, old, new 
 			return err
 		}
 	}
+
 	return nil
 }

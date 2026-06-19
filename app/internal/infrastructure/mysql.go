@@ -14,6 +14,7 @@ func NewMySQL(cfg config.MySQLConfig) (*sql.DB, error) {
 		return nil, fmt.Errorf("open mysql: %w", err)
 
 	}
+
 	db.SetMaxOpenConns(cfg.MaxOpenConns)
 	db.SetMaxIdleConns(cfg.MaxIdleConns)
 	db.SetConnMaxLifetime(cfg.ConnMaxLifetime)

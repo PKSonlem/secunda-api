@@ -38,6 +38,8 @@ func (s *TeamService) List(ctx context.Context, userID int64) ([]*domain.Team, e
 	return s.teams.ListByUserID(ctx, userID)
 }
 
+// Invite добавляет участника и отправляет email. Ошибка email не возвращается —
+// добавление уже зафиксировано в БД, отправка письма некритична.
 func (s *TeamService) Invite(ctx context.Context, callerID, teamID int64, inviteeEmail string) error {
 	member, err := s.teams.GetMember(ctx, teamID, callerID)
 	if err != nil {

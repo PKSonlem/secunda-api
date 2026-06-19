@@ -9,7 +9,6 @@ import (
 
 var builder = sq.StatementBuilder.PlaceholderFormat(sq.Question)
 
-// TxManager запускает функцию внутри транзакции.
 type TxManager struct{ db *sql.DB }
 
 func NewTxManager(db *sql.DB) *TxManager { return &TxManager{db: db} }

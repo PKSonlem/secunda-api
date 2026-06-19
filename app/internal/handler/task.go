@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"errors"
 	"net/http"
 	"strconv"
@@ -11,18 +10,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type taskService interface {
-	Create(ctx context.Context, userID int64, task *domain.Task) (*domain.Task, error)
-	Update(ctx context.Context, userID, taskID int64, update *domain.Task) (*domain.Task, error)
-	List(ctx context.Context, filter domain.TaskFilter) ([]*domain.Task, int, error)
-	GetHistory(ctx context.Context, userID, taskID int64) ([]*domain.TaskHistory, error)
-}
-
 type TaskHandler struct {
-	svc taskService
+	svc domain.TaskService
 }
 
-func NewTaskHandler(svc taskService) *TaskHandler {
+func NewTaskHandler(svc domain.TaskService) *TaskHandler {
 	return &TaskHandler{svc: svc}
 }
 
@@ -31,6 +23,7 @@ func (h *TaskHandler) Create(c echo.Context) error {
 	if err := c.Bind(&task); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
+
 	if task.Status != "" {
 		switch task.Status {
 		case domain.StatusTodo, domain.StatusInProgress, domain.StatusDone:
@@ -49,6 +42,7 @@ func (h *TaskHandler) Create(c echo.Context) error {
 
 func (h *TaskHandler) List(c echo.Context) error {
 	filter := domain.TaskFilter{Page: 1, PageSize: 20}
+
 	if v := c.QueryParam("team_id"); v != "" {
 		id, _ := strconv.ParseInt(v, 10, 64)
 		filter.TeamID = &id

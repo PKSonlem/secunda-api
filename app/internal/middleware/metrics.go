@@ -4,10 +4,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/labstack/echo/v4"
 	"github.com/PKSonlem/testtask-secunda-api/pkg/metrics"
+	"github.com/labstack/echo/v4"
 )
 
+// Metrics использует c.Path() (паттерн маршрута, напр. /tasks/:id), а не реальный URL —
+// это предотвращает взрыв кардинальности лейблов в Prometheus.
 func Metrics() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {

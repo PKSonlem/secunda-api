@@ -5,9 +5,14 @@ import (
 	"database/sql"
 )
 
-type AnalyticsRepository struct{ db *sql.DB }
+// AnalyticsRepository использует сырой SQL: squirrel не поддерживает оконные функции (RANK() OVER PARTITION BY) и NOT EXISTS субзапросы.
+type AnalyticsRepository struct {
+	db *sql.DB
+}
 
-func NewAnalyticsRepository(db *sql.DB) *AnalyticsRepository { return &AnalyticsRepository{db: db} }
+func NewAnalyticsRepository(db *sql.DB) *AnalyticsRepository {
+	return &AnalyticsRepository{db: db}
+}
 
 type TeamStats struct {
 	TeamID       int64  `json:"team_id"`
