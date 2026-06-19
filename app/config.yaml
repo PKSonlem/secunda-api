@@ -1,0 +1,23 @@
+server:
+  addr: ":8080"
+
+mysql:
+  dsn: "secunda:secunda@tcp(mysql:3306)/secunda?parseTime=true&loc=UTC"
+  max_open_conns: 25
+  max_idle_conns: 10
+  conn_max_lifetime: 5m
+
+redis:
+  addr: "redis:6379"
+  password: ""
+  db: 0
+
+jwt:
+  secret: "change-me-in-production"
+  access_token_ttl: 15m
+
+email:
+  url: "http://mailhog:8025"
+
+log:
+  level: "info"

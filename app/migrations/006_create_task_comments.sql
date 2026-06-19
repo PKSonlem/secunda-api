@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS task_comments (
+    id         BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    task_id    BIGINT UNSIGNED NOT NULL,
+    user_id    BIGINT UNSIGNED NOT NULL,
+    body       TEXT            NOT NULL,
+    created_at DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_tc_task FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE,
+    CONSTRAINT fk_tc_user FOREIGN KEY (user_id) REFERENCES users (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
