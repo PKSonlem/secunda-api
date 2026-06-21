@@ -6,8 +6,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/PKSonlem/secunda-api/internal/domain"
-	mysqlrepo "github.com/PKSonlem/secunda-api/internal/repository/mysql"
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
+	mysqlrepo "github.com/PKSonlem/testtask-secunda-api/internal/repository/mysql"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

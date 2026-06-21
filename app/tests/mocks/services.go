@@ -3,13 +3,14 @@ package mocks
 import (
 	"context"
 
-	"github.com/PKSonlem/secunda-api/internal/domain"
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
 )
 
 // AuthSvc mocks the authService interface used by AuthHandler.
 type AuthSvc struct {
-	RegisterFn func(ctx context.Context, email, password, name string) (*domain.User, error)
-	LoginFn    func(ctx context.Context, email, password string) (string, error)
+	RegisterFn      func(ctx context.Context, email, password, name string) (*domain.User, error)
+	LoginFn         func(ctx context.Context, email, password string) (string, error)
+	ValidateTokenFn func(token string) (int64, error)
 }
 
 func (m *AuthSvc) Register(ctx context.Context, email, password, name string) (*domain.User, error) {
@@ -24,6 +25,13 @@ func (m *AuthSvc) Login(ctx context.Context, email, password string) (string, er
 		return m.LoginFn(ctx, email, password)
 	}
 	return "", nil
+}
+
+func (m *AuthSvc) ValidateToken(token string) (int64, error) {
+	if m.ValidateTokenFn != nil {
+		return m.ValidateTokenFn(token)
+	}
+	return 0, nil
 }
 
 // TeamSvc mocks the teamService interface used by TeamHandler.

@@ -3,7 +3,7 @@ package mocks
 import (
 	"context"
 
-	"github.com/PKSonlem/secunda-api/internal/domain"
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
 )
 
 // UserRepo implements domain.UserRepository.

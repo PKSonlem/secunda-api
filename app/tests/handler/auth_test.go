@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/PKSonlem/secunda-api/internal/domain"
-	"github.com/PKSonlem/secunda-api/internal/handler"
-	"github.com/PKSonlem/secunda-api/tests/mocks"
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
+	"github.com/PKSonlem/testtask-secunda-api/internal/handler"
+	"github.com/PKSonlem/testtask-secunda-api/tests/mocks"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

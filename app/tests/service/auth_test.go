@@ -5,10 +5,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PKSonlem/secunda-api/internal/config"
-	"github.com/PKSonlem/secunda-api/internal/domain"
-	"github.com/PKSonlem/secunda-api/internal/service"
-	"github.com/PKSonlem/secunda-api/tests/mocks"
+	"github.com/PKSonlem/testtask-secunda-api/internal/config"
+	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
+	"github.com/PKSonlem/testtask-secunda-api/internal/service"
+	"github.com/PKSonlem/testtask-secunda-api/tests/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

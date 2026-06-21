@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/app/migrations/001_create_users.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/migrations/002_create_teams.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/migrations/003_create_team_members.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/migrations/004_create_tasks.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/migrations/005_create_task_history.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/migrations/006_create_task_comments.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/app/migrations/007_create_indexes.sql" dialect="GenericSQL" />
+  </component>
+</project>
