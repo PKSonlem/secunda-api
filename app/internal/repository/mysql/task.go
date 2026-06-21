@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
@@ -159,10 +160,19 @@ func (r *TaskRepository) GetHistory(ctx context.Context, taskID int64) ([]*domai
 // writeHistory пишет только изменившиеся поля, а не полный снимок —
 // чтобы история не засорялась записями без реального изменения.
 func (r *TaskRepository) writeHistory(ctx context.Context, tx *sql.Tx, old, new *domain.Task, changedBy int64) error {
+	oldAssignee, newAssignee := "", ""
+	if old.AssigneeID != nil {
+		oldAssignee = fmt.Sprintf("%d", *old.AssigneeID)
+	}
+	if new.AssigneeID != nil {
+		newAssignee = fmt.Sprintf("%d", *new.AssigneeID)
+	}
+
 	fields := []struct{ name, old, new string }{
 		{"title", old.Title, new.Title},
 		{"description", old.Description, new.Description},
 		{"status", string(old.Status), string(new.Status)},
+		{"assignee_id", oldAssignee, newAssignee},
 	}
 
 	for _, f := range fields {

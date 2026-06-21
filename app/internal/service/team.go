@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 
 	"github.com/PKSonlem/testtask-secunda-api/internal/domain"
@@ -42,16 +43,22 @@ func (s *TeamService) List(ctx context.Context, userID int64) ([]*domain.Team, e
 // добавление уже зафиксировано в БД, отправка письма некритична.
 func (s *TeamService) Invite(ctx context.Context, callerID, teamID int64, inviteeEmail string) error {
 	member, err := s.teams.GetMember(ctx, teamID, callerID)
-	if err != nil {
+	if errors.Is(err, domain.ErrNotFound) {
 		return domain.ErrForbidden
+	}
+	if err != nil {
+		return err
 	}
 	if member.Role != domain.RoleOwner && member.Role != domain.RoleAdmin {
 		return domain.ErrForbidden
 	}
 
 	invitee, err := s.users.GetByEmail(ctx, inviteeEmail)
-	if err != nil {
+	if errors.Is(err, domain.ErrNotFound) {
 		return domain.ErrNotFound
+	}
+	if err != nil {
+		return err
 	}
 
 	if err := s.teams.AddMember(ctx, &domain.TeamMember{

@@ -85,7 +85,7 @@ func applyMigrations(dsn string) error {
 func cleanDB(t *testing.T) {
 	t.Helper()
 
-	for _, tbl := range []string{"task_comments", "task_history", "tasks", "teams", "users"} {
+	for _, tbl := range []string{"task_comments", "task_history", "tasks", "team_members", "teams", "users"} {
 		_, err := testDB.Exec("DELETE FROM " + tbl)
 		require.NoError(t, err, "clean table %s", tbl)
 	}
